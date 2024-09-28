@@ -1,0 +1,30 @@
+[binaries]
+c = 'aarch64-systemd-linux-gnu-gcc'
+cpp = 'aarch64-systemd-linux-gnu-g++'
+ar = 'aarch64-systemd-linux-gnu-gcc-ar'
+nm = 'aarch64-systemd-linux-gnu-gcc-nm'
+strip = 'aarch64-systemd-linux-gnu-strip'
+readelf = 'aarch64-systemd-linux-gnu-readelf'
+objcopy = 'aarch64-systemd-linux-gnu-objcopy'
+pkg-config = 'pkg-config'
+
+
+[built-in options]
+c_args = ['-I/home/chumoath/systemd/sysroot/include', '-I/home/chumoath/systemd/sysroot/usr/include']
+c_link_args = ['-L/home/chumoath/systemd/sysroot/lib', '-L/home/chumoath/systemd/sysroot/lib64', '-L/home/chumoath/systemd/sysroot/usr/lib', '-L/home/chumoath/systemd/sysroot/usr/lib64']
+cpp_args = ['-I/home/chumoath/systemd/sysroot/include', '-I/home/chumoath/systemd/sysroot/usr/include']
+cpp_link_args = ['-L/home/chumoath/systemd/sysroot/lib', '-L/home/chumoath/systemd/sysroot/lib64', '-L/home/chumoath/systemd/sysroot/usr/lib', '-L/home/chumoath/systemd/sysroot/usr/lib64']
+
+[properties]
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+
+[target_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'

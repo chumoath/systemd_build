@@ -1,0 +1,123 @@
+apt install autopoint gettext
+export PKG_CONFIG_SYSROOT_DIR=/home/chumoath/systemd/sysroot
+export PKG_CONFIG_PATH=/home/chumoath/systemd/sysroot/usr/lib/pkgconfig:/home/chumoath/systemd/sysroot/ib64/pkgconfig:/home/chumoath/systemd/sysroot/lib/pkgconfig
+
+
+https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.69.tar.gz
+libcap 2.69
+
+make -j28 AR=aarch64-systemd-linux-gnu-gcc-ar CC=aarch64-systemd-linux-gnu-gcc RANLIB=aarch64-systemd-linux-gnu-gcc-ranlib OBJCOPY=aarch64-systemd-linux-gnu-objcopy BUILD_CC=gcc
+make all
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+
+ncurse
+
+https://github.com/mirror/ncurses.git
+"79b9071f2be20a24c7be031655a5638f6032f29f"
+../configure --host=aarch64-systemd-linux-gnu --prefix=/usr --with-shared --with-termlib  --enable-pc-files --enable-widec
+make -j25
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+#export PATH=/home/chumoath/x-tools/aarch64-systemd-linux-gnu/bin:/home/chumoath/x-tools/aarch64-systemd-linux-gnu/aarch64-systemd-linux-gnu/bin:$PATH
+export PATH=/home/chumoath/x-tools/aarch64-systemd-linux-gnu/bin:$PATH
+export PKG_CONFIG_PATH=/home/chumoath/systemd/sysroot/usr/lib/pkgconfig:/home/chumoath/systemd/sysroot/ib64/pkgconfig:/home/chumoath/systemd/sysroot/lib/pkgconfig
+
+
+zlib
+
+https://zlib.net/zlib-1.3.1.tar.gz
+
+CC=aarch64-systemd-linux-gnu-gcc CXX=aarch64-systemd-linux-gnu-g++ ../configure --prefix=/usr
+make -j25
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+
+
+https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-2.39.3.tar.gz
+
+meson setup builddir --cross-file=./meson.cross --prefix=/usr -Dbuild-python=disabled -Dsystemd=disabled 
+ninja -C builddir
+DESTDIR=/home/chumoath/systemd/sysroot ninja -C builddir install 
+
+
+openssl -  no need
+http://www.openssl.org/source/openssl-3.2.1.tar.gz
+../Configure --cross-compile-prefix=aarch64-systemd-linux-gnu- no-asm shared --prefix=/usr
+sed -i "s/-m64/ /g" Makefile 
+make -j25
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+install: DESTDIR/[prefix]
+
+
+export PKG_CONFIG_PATH=/home/chumoath/systemd/sysroot/usr/lib/pkgconfig:/home/chumoath/systemd/sysroot/ib64/pkgconfig:/home/chumoath/systemd/sysroot/lib/pkgconfig
+
+
+
+libcrypt
+
+git clone https://github.com/besser82/libxcrypt.git
+git checkout "f531a36aa916a22ef2ce7d270ba381e264250cbf"
+
+../configure --host=aarch64-systemd-linux-gnu --prefix=/usr
+make -j25
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+
+
+
+libpam
+https://github.com/linux-pam/linux-pam/archive/refs/tags/v1.6.0.tar.gz
+
+export PATH=/home/chumoath/x-tools/aarch64-systemd-linux-gnu/aarch64-systemd-linux-gnu/bin:$PATH
+../configure --host=aarch64-systemd-linux-gnu --prefix=/usr --disable-doc CFLAGS="-I/home/chumoath/systemd/sysroot/usr/include -L/home/chumoath/systemd/sysroot/lib64 -L/home/chumoath/systemd/sysroot/usr/lib64 -L/home/chumoath/systemd/sysroot/usr/lib" --disable-regenerate-docu --enable-static=yes --disable-pie --disable-prelude --disable-cracklib --disable-audit --enable-db=no --disable-nis --disable-selinux --disable-econf --disable-nls --disable-rpath
+make -j25
+
+# strip 等工具的路径必须也用交叉编译的，只有安装时才能用，否则会影响其他的工具编译
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+
+pcre2
+
+https://github.com/PCRE2Project/pcre2/archive/refs/tags/pcre2-10.43.tar.gz
+../configure --host=aarch64-systemd-linux-gnu --prefix=/usr
+make -j25
+make DESTDIR=/home/chumoath/systemd/sysroot install
+
+
+systemd
+
+git clone https://github.com/systemd/systemd-stable.git -b v255-stable
+git checkout "387a14a7b67b8b76adaed4175e14bb7e39b2f738"
+
+meson setup builddir --cross-file=./meson.cross --prefix=/ -Dselinux=disabled -Dtests=false
+ninja -C builddir
+# -Wl,-rpath-link 需要加到链接选项中  c_link_args
+DESTDIR=/home/chumoath/systemd/sysroot ninja -C builddir install
+
+
+autoconf
+automake
+autopoint
+bison
+bzip2
+docbook-xml
+docbook-xsl
+flex
+gettext
+libaudit-dev
+libcrack2-dev
+libdb-dev
+libfl-dev
+libselinux1-dev
+libtool
+libxcrypt-dev
+libxml2-utils
+make
+pkg-config
+sed
+w3m
+xsltproc
+xz-utils
+gcc
